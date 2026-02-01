@@ -1,0 +1,39 @@
+name: Cyber Time Capsule 2031
+
+on:
+  schedule:
+    # Runs at 00:00 UTC on March 1st every year
+    - cron: '0 0 1 3 *'
+  workflow_dispatch:
+    inputs:
+      custom_message:
+        description: 'Manual Time Capsule Trigger Message / 手動調用時光膠囊訊息'
+        required: false
+        default: 'Manual execution of Cyber Time Capsule'
+
+jobs:
+  open-capsule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Process Time Capsule Message
+        run: |
+          CURRENT_DATE=$(date -u +"%Y-%m-%d")
+          TARGET_DATE="2031-03-01"
+          echo "=================================================="
+          echo "Cyber Time Capsule execution date: $CURRENT_DATE"
+          echo "Target Date: $TARGET_DATE"
+          echo "=================================================="
+
+          if [ "$CURRENT_DATE" == "$TARGET_DATE" ]; then
+            echo "🎉 TIME CAPSULE ACTIVATED! Hello 2031 Future Self! 🎉"
+            echo "Challenge completed! Check repo metadata and achievements."
+          else
+            echo "Capsule sealed. Days remaining until 2031-03-01."
+          fi
+
+      - name: Post Time Capsule Status Log
+        run: |
+          echo "Time Capsule checked on $(date -u) by 31gold automated workflow." >> time_capsule_status.log
